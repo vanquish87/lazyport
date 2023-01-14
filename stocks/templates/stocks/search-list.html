@@ -1,0 +1,22 @@
+<section id="main" class="pb-5 text-center">
+    <div class="container-sm">
+        <div class="row justify-content-around align-items-center">
+            <div class="col-md-8 py-5">
+                <div class="d-grid gap-3">
+                    <table class="table table-dark table-hover table-bordered">
+                        <tr>
+                            <th>Script ID</th>
+                            <th>Exchange</th>
+                        </tr>
+                        {% for stock in stocks %}
+                        <tr>
+                            <td>{{ stock.scriptid }}</td>
+                            <td>{{ stock.exchange }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

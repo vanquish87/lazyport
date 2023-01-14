@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section id="search" class="pt-5 text-center">
+    <!-- for symmetry from top to bottom on page I am using a container -->
+    <div class="container-sm">
+        <div class="row justify-content-around align-items-center text-center">
+            <div class="col-md-6">
+
+                <form class="form" action="{% url 'search-stock' %}" method="get">
+                    {% csrf_token %}
+                    <!-- Input:Text -->
+                    <div class="form-group mx-sm-3 mb-3">
+                        <input type="text" id="search-input" name="q" class="form-control" placeholder="Search for a stock..." value="{{ q }}" />
+                    </div>
+                    <input type="submit" class="btn btn-success" value="Search" />
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div id="search-results"></div>
+
+<script>
+    $(document).ready(function(){
+        $("#search-input").on("input", function(){
+            var search_query = $(this).val();
+            $.ajax({
+                url: "{% url 'search-list' %}",
+                data: {
+                    'q': search_query,
+                },
+                success: function(data){
+                    $("#search-results").html(data);
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}
