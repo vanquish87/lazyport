@@ -21,7 +21,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('index.urls')),
     path('account/', include('accounts.urls')),
+    path('stock/', include('stocks.urls')),
 ]
 
 # to access 'staticfiles' in 'production' environment: confusing me a bit

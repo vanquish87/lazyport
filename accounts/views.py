@@ -9,7 +9,7 @@ from .models import Account
 # Create your views here.
 def profile(request):
     context = {}
-    return render(request, 'account/profile.html', context)
+    return render(request, 'accounts/profile.html', context)
 
 
 def loginUser(request):
@@ -33,7 +33,7 @@ def loginUser(request):
         else:
             messages.warning(request, 'email or Password is incorrect')
 
-    return render(request, 'account/login.html')
+    return render(request, 'accounts/login.html')
 
 
 @login_required(login_url='login')
