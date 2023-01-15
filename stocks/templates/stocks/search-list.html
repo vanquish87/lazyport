@@ -7,11 +7,13 @@
                         <tr>
                             <th>Script ID</th>
                             <th>Exchange</th>
+                            <th>Chart</th>
                         </tr>
                         {% for stock in stocks %}
                         <tr>
                             <td>{{ stock.scriptid }}</td>
                             <td>{{ stock.exchange }}</td>
+                            <td><a href="{% url 'stock-chart' stock_id=stock.id %}">View Chart</a></td>
                         </tr>
                         {% endfor %}
                     </table>
