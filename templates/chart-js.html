@@ -1,39 +1,90 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
 <script>
-    // === include 'setup' then 'config' above ===
-    const labels = {{ date_list | safe }};
-    const data = {
-      labels: labels,
-      datasets: [{
-        label: 'Closing Price',
-        borderColor: '#32F329',
-        fill: false,
-        tension: .3,
-        pointStyle: 'circle',
-        pointRadius: 0,
-        data: {{ closing_price_list | safe }},
-      }]
-    };
+  let dailyShown = true;
+  const labelsDaily = {{ date_list | safe }};
+  const labelsWeekly = {{ dates_weekly | safe }};
+  const labelsMonthly = {{ dates_monthly | safe }};
+  const closing_price_list = {{ closing_price_list | safe }};
+  const closing_data_weekly = {{ closing_data_weekly | safe }};
+  const closing_data_monthly = {{ closing_data_monthly | safe }};
 
-    const config = {
-      type: 'line',
-      data: data,
-      options: {
-        responsive: true,
-        tooltips: {
-                mode: 'index',
-                intersect: false
-            },
-            hover: {
-                mode: 'index',
-                intersect: false
-            }
-        }
-    };
+  const data1 = {
+      label: 'Closing Price (daily)',
+      borderColor: '#32F329',
+      fill: false,
+      tension: .3,
+      pointStyle: 'circle',
+      pointRadius: 0,
+      data: closing_price_list,
+    }
 
-    const myChart = new Chart(
-      document.getElementById('myChart'),
-      config
-    );
-  </script>
+  const data2 = {
+      label: 'Closing Price (weekly)',
+      borderColor: '#ffc107',
+      fill: false,
+      tension: .3,
+      pointStyle: 'circle',
+      pointRadius: 0,
+      data: closing_data_weekly,
+    }
+
+    const data3 = {
+      label: 'Closing Price (monthly)',
+      borderColor: '#dc3545',
+      fill: false,
+      tension: .3,
+      pointStyle: 'circle',
+      pointRadius: 0,
+      data: closing_data_monthly,
+    }
+
+  const data = {
+    labels: labelsDaily,
+    datasets: [data1]
+  };
+
+  const config = {
+    type: 'line',
+    data: data,
+    options: {
+      responsive: true,
+      tooltips: {
+              mode: 'index',
+              intersect: false
+          },
+          hover: {
+              mode: 'index',
+              intersect: false
+          }
+      }
+  };
+
+  const myChart = new Chart(
+    document.getElementById('myChart'),
+    config
+  );
+
+  function loadDaily() {
+    myChart.data.labels = labelsDaily;
+    myChart.data.datasets = [data1];
+    myChart.update();
+    dailyShown = true;
+  }
+
+  function loadWeekly() {
+    myChart.data.labels = labelsWeekly;
+    myChart.data.datasets = [data2];
+    myChart.update();
+  }
+
+
+  function loadMonthly() {
+    myChart.data.labels = labelsMonthly;
+    myChart.data.datasets = [data3];
+    myChart.update();
+  }
+
+</script>
+
+

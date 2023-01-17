@@ -138,7 +138,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # custom user model that we declared in account.models
 AUTH_USER_MODEL = 'accounts.Account'
 
-SESSION_COOKIE_AGE = 600
+SESSION_COOKIE_AGE = 6000
 
 # message tags - many of them already incuded in django -- read django docs
 from django.contrib.messages import constants as messages
@@ -153,3 +153,10 @@ MESSAGE_TAGS = {
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}

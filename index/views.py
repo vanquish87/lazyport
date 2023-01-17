@@ -5,6 +5,6 @@ from django.conf import settings
 
 @login_required(login_url='login')
 def index(request):
-    settings.SESSION_COOKIE_AGE = 600
+    settings.SESSION_COOKIE_AGE = 6000
     context = {}
     return render(request, 'index/index.html', context)

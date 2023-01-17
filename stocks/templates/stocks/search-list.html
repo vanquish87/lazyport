@@ -13,7 +13,7 @@
                         <tr>
                             <td>{{ stock.scriptid }}</td>
                             <td>{{ stock.exchange }}</td>
-                            <td><a href="{% url 'stock-chart' stock_id=stock.id %}">View Chart</a></td>
+                            <td><a href="{% url 'stock-chart' stock_id=stock.id scriptid=stock.scriptid %}">View Chart</a></td>
                         </tr>
                         {% endfor %}
                     </table>

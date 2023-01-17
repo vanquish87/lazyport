@@ -4,6 +4,7 @@ from decouple import config
 import pyotp, requests
 from datetime import datetime, timedelta
 from .models import Stock_price
+from django.db import transaction
 
 
 def instrumentList():
@@ -106,23 +107,36 @@ def date_list(fromdate):
     return dates
 
 
-def records_create_update(scripts, fromdate, todate, obj, instrument_list):
-    print(fromdate, todate)
+def records_create_update(scripts, obj, instrument_list, fromdate=None, todate=None, update=False):
     # Create a list to hold the new Stock_price records
     new_records = []
     # Create a list to hold the existing Stock_price records that need to be updated
     existing_records = []
+    num = 1
+    upto_date = False
 
     for i in scripts:
-        print(f'Fetching {i.id} of {len(scripts)}.')
-        closing_list = getDataAPI(i, fromdate, todate, obj, instrument_list)
+        if update == True:
+            prices = Stock_price.objects.filter(stock=i["id"]).values('date', 'closing_price').order_by('-date')
+
+            fromdate = prices[0]['date']
+            now = datetime.now()
+            todate = now.strftime('%Y-%m-%d')
+
+            if str(fromdate) == str(todate):
+                upto_date = True
+                break
+
+        print(f"Fetching {num} of {len(scripts)}. From {fromdate} to {todate} - {i['scriptid']} {i['id']} .")
+        closing_list = getDataAPI(i['scriptid'], fromdate, todate, obj, instrument_list)
+
         # iterate through data and create or update stock_prices
         for row in closing_list:
             try:
                 date = row[0]
                 closing_price = round(row[4], 2)
                 if not isinstance(closing_price, (float, int)):
-                    raise ValueError(f"closing_price {closing_price} should be a decimal for {i.scriptid} on {date} ")
+                    raise ValueError(f"closing_price {closing_price} should be a decimal for {i['scriptid']} on {date} ")
             except Exception as e:
                 print(f"Error: {e}")
                 continue
@@ -131,16 +145,34 @@ def records_create_update(scripts, fromdate, todate, obj, instrument_list):
             date_for_database = date_object.date()
 
             # Check if the Stock_price record already exists
-            existing_record = Stock_price.objects.filter(stock=i, date=date_for_database).first()
+            existing_record = Stock_price.objects.filter(stock_id=i["id"], date=date_for_database).first()
             if existing_record:
-                # If the record exists, add it to the list of existing records that need to be updated
                 existing_record.closing_price = closing_price
                 existing_records.append(existing_record)
             else:
                 # If the record does not exist, create a new Stock_price record
-                new_record = Stock_price(stock=i, date=date_for_database, closing_price=closing_price)
+                new_record = Stock_price(stock_id=i["id"], date=date_for_database, closing_price=closing_price)
                 new_records.append(new_record)
 
+        num += 1
         time.sleep(0.15)
 
-    return new_records, existing_records
+    msg = None
+
+    if upto_date:
+        msg = 'Everything Upto Date. No need for more updating!'
+        return new_records, existing_records, msg
+
+    return new_records, existing_records, msg
+
+
+
+def bulk_operations(new_records, existing_records):
+    start_time = time.time()
+    # Use the transaction.atomic decorator to ensure that the bulk create and update operations are atomic
+    with transaction.atomic():
+        Stock_price.objects.bulk_create(new_records)
+        Stock_price.objects.bulk_update(existing_records, ['closing_price'])
+    end_time = time.time()
+    total_time = end_time - start_time
+    print("Total time taken: ", total_time)
