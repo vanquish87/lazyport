@@ -5,13 +5,26 @@
 
 {% load static %}
 {% block content %}
-<section id="search" class="pt-5 text-center">
+<section id="search" class="pb-5 mb-5 text-center">
     <div class="container-xxl">
 
         <div class="row justify-content-around align-items-center text-center">
             <div class="col-lg-12">
-                <h1>{{ scriptid }}</h1>
-                <canvas id="myChart"></canvas>
+                <div class="col-lg-12">
+                    <h1>{{ scriptid }}</h1>
+                    <canvas id="myChart"></canvas>
+                </div>
+                <div class="my-3 text-center">
+                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='3_months' %}" class="text-decoration-none text-light">3 Months</a></button>
+                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='6_months' %}" class="text-decoration-none text-light">6 Months</a></button>
+                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='1_year' %}" class="text-decoration-none text-light">1 Year</a></button>
+                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='2_year' %}" class="text-decoration-none text-light">2 Year</a></button>
+                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='3_year' %}" class="text-decoration-none text-light">3 Year</a></button>
+                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='5_year' %}" class="text-decoration-none text-light">5 Year</a></button>
+                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='8_year' %}" class="text-decoration-none text-light">8 Year</a></button>
+                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid %}" class="text-decoration-none text-light">All</a></button>
+                </div>
+
                 <div class=" my-3 text-center">
                     <button class="btn btn-success mx-1"  id="daily-button" onclick="loadDaily()">Daily</button>
                     <button class="btn btn-warning mx-1"  id="weekly-button" onclick="loadWeekly()">Weekly</button>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Stock, Stock_price
-from .utils import instrumentList, scriptName, loginAngel, date_list, records_create_update, bulk_operations
+from .utils import instrumentList, scriptName, loginAngel, date_list, records_create_update, bulk_operations, days_for_timeline
 from .scripts import scripts
 from django.contrib import messages
 from django.db.models.functions import Cast
@@ -92,8 +92,12 @@ def stock_price_update(request):
 
 @login_required(login_url='login')
 @cache_page(60 * 15)
-def stock_chart(request, stock_id, scriptid):
-    prices = Stock_price.objects.filter(stock=stock_id).annotate(closing_price_float=Cast('closing_price', FloatField())).values('date', 'closing_price_float')
+def stock_chart(request, stock_id, scriptid, timeline=None):
+    if timeline:
+        start_date = days_for_timeline(timeline)
+        prices = Stock_price.objects.filter(stock=stock_id, date__gte=start_date).annotate(closing_price_float=Cast('closing_price', FloatField())).values('date', 'closing_price_float')
+    else:
+        prices = Stock_price.objects.filter(stock=stock_id).annotate(closing_price_float=Cast('closing_price', FloatField())).values('date', 'closing_price_float')
 
     date_list = [x['date'].strftime('%Y-%m-%d') for x in prices]
 
@@ -117,6 +121,7 @@ def stock_chart(request, stock_id, scriptid):
     dates_monthly = df_monthly.index.strftime("%Y-%m-%d").tolist()
 
     context = {
+        'stock_id': stock_id,
         'scriptid': scriptid,
         'date_list': date_list,
         'closing_price_list': closing_price_list,

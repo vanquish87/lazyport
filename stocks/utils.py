@@ -176,3 +176,23 @@ def bulk_operations(new_records, existing_records):
     end_time = time.time()
     total_time = end_time - start_time
     print("Total time taken: ", total_time)
+
+
+def days_for_timeline(timeline):
+    now = datetime.now()
+    if timeline == '3_months':
+        start_date = now - timedelta(days=90)
+    elif timeline == '6_months':
+        start_date = now - timedelta(days=180)
+    elif timeline == '1_year':
+        start_date = now - timedelta(days=365)
+    elif timeline == '2_year':
+        start_date = now - timedelta(days=365*2)
+    elif timeline == '3_year':
+        start_date = now - timedelta(days=365*3)
+    elif timeline == '5_year':
+        start_date = now - timedelta(days=365*5)
+    elif timeline == '8_year':
+        start_date = now - timedelta(days=365*8)
+
+    return start_date

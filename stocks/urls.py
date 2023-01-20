@@ -9,4 +9,5 @@ urlpatterns = [
     path('stock-price-start/', views.stock_price_start, name='stock-price-start'),
     path('stock-price-update/', views.stock_price_update, name='stock-price-update'),
     path('chart/<int:stock_id>/<str:scriptid>/', views.stock_chart, name='stock-chart'),
+    path('chart/<int:stock_id>/<str:scriptid>/<str:timeline>', views.stock_chart, name='stock-chart'),
 ]
