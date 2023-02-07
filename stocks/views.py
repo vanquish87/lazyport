@@ -123,6 +123,7 @@ def stock_chart(request, stock_id, scriptid, timeline=None):
     context = {
         'stock_id': stock_id,
         'scriptid': scriptid,
+        'timeline': timeline,
         'date_list': date_list,
         'closing_price_list': closing_price_list,
         'dates_weekly': dates_weekly,

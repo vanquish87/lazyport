@@ -1,40 +1,33 @@
-{% extends 'base.html' %}
-{% block title %}
+{% extends 'base.html' %} {% block title %}
 <title>{{ scriptid }} - LPT</title>
-{% endblock %}
-
-{% load static %}
-{% block content %}
+{% endblock %} {% load static %} {% block content %}
 <section id="search" class="pb-5 mb-5 text-center">
     <div class="container-xxl">
-
         <div class="row justify-content-around align-items-center text-center">
             <div class="col-lg-12">
                 <div class="col-lg-12">
                     <h1>{{ scriptid }}</h1>
-                    <canvas id="myChart"></canvas>
+                    <canvas id="myChart"> </canvas>
                 </div>
                 <div class="my-3 text-center">
-                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='3_months' %}" class="text-decoration-none text-light">3 Months</a></button>
-                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='6_months' %}" class="text-decoration-none text-light">6 Months</a></button>
-                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='1_year' %}" class="text-decoration-none text-light">1 Year</a></button>
-                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='2_year' %}" class="text-decoration-none text-light">2 Year</a></button>
-                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='3_year' %}" class="text-decoration-none text-light">3 Year</a></button>
-                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='5_year' %}" class="text-decoration-none text-light">5 Year</a></button>
-                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='8_year' %}" class="text-decoration-none text-light">8 Year</a></button>
-                    <button class="btn btn-primary mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid %}" class="text-decoration-none text-light">All</a></button>
+                    <button class="btn btn-{% if timeline == '3_months' %}secondary{% else %}primary{% endif %} mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='3_months' %}" class="text-decoration-none text-light">3 Months</a></button>
+                    <button class="btn btn-{% if timeline == '6_months' %}secondary{% else %}primary{% endif %} mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='6_months' %}" class="text-decoration-none text-light">6 Months</a></button>
+                    <button class="btn btn-{% if timeline == '1_year' %}secondary{% else %}primary{% endif %} mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='1_year' %}" class="text-decoration-none text-light">1 Year</a></button>
+                    <button class="btn btn-{% if timeline == '2_year' %}secondary{% else %}primary{% endif %} mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='2_year' %}" class="text-decoration-none text-light">2 Year</a></button>
+                    <button class="btn btn-{% if timeline == '3_year' %}secondary{% else %}primary{% endif %} mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='3_year' %}" class="text-decoration-none text-light">3 Year</a></button>
+                    <button class="btn btn-{% if timeline == '5_year' %}secondary{% else %}primary{% endif %} mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='5_year' %}" class="text-decoration-none text-light"> 5 Year</a></button>
+                    <button class="btn btn-{% if timeline == '8_year' %}secondary{% else %}primary{% endif %} mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid timeline='8_year' %}" class="text-decoration-none text-light">8 Year</a></button>
+                    <button class="btn btn-{% if timeline == None %}secondary{% else %}primary{% endif %} mx-1"><a href="{% url 'stock-chart' stock_id=stock_id scriptid=scriptid %}" class="text-decoration-none text-light">All</a></button>
                 </div>
 
-                <div class=" my-3 text-center">
-                    <button class="btn btn-success mx-1"  id="daily-button" onclick="loadDaily()">Daily</button>
-                    <button class="btn btn-warning mx-1"  id="weekly-button" onclick="loadWeekly()">Weekly</button>
-                    <button class="btn btn-danger mx-1"  id="weekly-button" onclick="loadMonthly()">Monthly</button>
+                <div class="my-3 text-center">
+                    <button class="btn btn-success mx-1" id="daily-button" onclick="loadDaily()">Daily</button>
+                    <button class="btn btn-warning mx-1" id="weekly-button" onclick="loadWeekly()">Weekly</button>
+                    <button class="btn btn-danger mx-1" id="weekly-button" onclick="loadMonthly()">Monthly</button>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-{% include 'chart-js.html' with date_list=date_list closing_price_list=closing_price_list dates_weekly=dates_weekly closing_data_weekly=closing_data_weekly dates_monthly=dates_monthly closing_data_monthly=closing_data_monthly %}
-
-{% endblock %}
+{% include 'chart-js.html' with date_list=date_list closing_price_list=closing_price_list dates_weekly=dates_weekly closing_data_weekly=closing_data_weekly dates_monthly=dates_monthly closing_data_monthly=closing_data_monthly %} {% endblock %}

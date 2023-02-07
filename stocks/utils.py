@@ -17,9 +17,9 @@ def instrumentList():
 def scriptName(scriptid, instrument_list):
     # get SCRIPTID from database of eq_stocks and convert them into stock_symbol
     stock_symbol = str(scriptid) + str('-EQ')
+    # print(instrument_list)
     for data in instrument_list:
         if data['symbol'] == stock_symbol:
-            # print(data)
             # print(data['token'])
             # print(data['name'])
             # print(data['exch_seg'])
